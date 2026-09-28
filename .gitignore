@@ -1,0 +1,46 @@
+# ---- runtime / build ----
+node_modules/
+dist/
+build/
+*.tsbuildinfo
+.npm/
+.pnpm-store/
+
+# ---- local state written by the runtime ----
+# States are committed per transition into a JSONL ledger (docs/STATE.md §5).
+# Never commit a real run's ledger, but keep the fixtures.
+*.jsonl
+!tests/fixtures/**/*.jsonl
+.prior/
+/tmp/
+
+# ---- credentials: MUST never be committed ----
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*.p12
+.credentials.yaml
+secrets/
+**/credentials.json
+
+# ---- editor / OS ----
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/*
+!.vscode/extensions.json
+*.swp
+*~
+
+# ---- logs / coverage ----
+*.log
+npm-debug.log*
+coverage/
+.nyc_output/
+*.lcoveralls
+
+# ---- local scratch ----
+scratch/
+tmp/
