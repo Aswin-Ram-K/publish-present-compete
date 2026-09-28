@@ -125,6 +125,8 @@ Also not built: the Cordis port (M1), Merkle DAG persistence, distribution, sign
 | [`docs/M0.md`](docs/M0.md) | the two-week build and its acceptance criteria |
 | [`docs/LANDSCAPE.md`](docs/LANDSCAPE.md) | verified positioning and licence status, with sources |
 | [`docs/DECISION_LOG.md`](docs/DECISION_LOG.md) | every classification decision and the alternatives rejected |
+| [`docs/BACKLOG.md`](docs/BACKLOG.md) | 11 epics, 63 work items with acceptance criteria |
+| [`docs/research/AGENT_HARNESSES_2026.md`](docs/research/AGENT_HARNESSES_2026.md) | the harness landscape, the five-subsystem model, and the measured evidence — with every claim labelled verified / reported / inference |
 
 ---
 
