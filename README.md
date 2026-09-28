@@ -125,7 +125,8 @@ Also not built: the Cordis port (M1), Merkle DAG persistence, distribution, sign
 | [`docs/M0.md`](docs/M0.md) | the two-week build and its acceptance criteria |
 | [`docs/LANDSCAPE.md`](docs/LANDSCAPE.md) | verified positioning and licence status, with sources |
 | [`docs/DECISION_LOG.md`](docs/DECISION_LOG.md) | every classification decision and the alternatives rejected |
-| [`docs/BACKLOG.md`](docs/BACKLOG.md) | 11 epics, 63 work items with acceptance criteria |
+| [`docs/BACKLOG.md`](docs/BACKLOG.md) | 12 epics, 83 work items with acceptance criteria |
+| [`docs/ADAPTERS.md`](docs/ADAPTERS.md) | hosting existing agents (Pi, opencode, Codex, …) as workers, with the per-capability guarantee |
 | [`docs/research/AGENT_HARNESSES_2026.md`](docs/research/AGENT_HARNESSES_2026.md) | the harness landscape, the five-subsystem model, and the measured evidence — with every claim labelled verified / reported / inference |
 
 ---
@@ -166,8 +167,8 @@ npm run ci                            # strict typecheck + offline suite
 ./scripts/sync-issues.sh --dry-run    # mirror docs/BACKLOG.md into GitHub issues
 ```
 
-Work is tracked in [`docs/BACKLOG.md`](docs/BACKLOG.md) — 11 epics, ~62 items, each with acceptance
-criteria, dependencies, and an advisory write scope. Start with the three flagged at the top.
+Work is tracked in [`docs/BACKLOG.md`](docs/BACKLOG.md) — 12 epics, 83 items, each with acceptance
+criteria, dependencies, and an advisory write scope. Start with the phase order at the top.
 
 Read [`CONTRIBUTING.md`](CONTRIBUTING.md) before changing anything on the boundary, and
 [`AGENTS.md`](AGENTS.md) if you are an agent.
