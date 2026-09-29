@@ -9,8 +9,16 @@ build/
 # ---- local state written by the runtime ----
 # States are committed per transition into a JSONL ledger (docs/STATE.md §5).
 # Never commit a real run's ledger, but keep the fixtures.
+#
+# AND keep the DEVELOPMENT TRACE. `*.jsonl` was meant for runtime ledgers and
+# silently swallowed traces/ too, so the trace system documented as append-only
+# evidence sat untracked through four commits -- 64 records not in version
+# control, not backed up, and invisible to anyone else. Found by asking whether
+# the file was actually in HEAD rather than assuming the commit had taken it.
+# See docs/MISTAKES.md: a corpus you believe is recorded and is not.
 *.jsonl
 !tests/fixtures/**/*.jsonl
+!traces/**/*.jsonl
 .prior/
 /tmp/
 
