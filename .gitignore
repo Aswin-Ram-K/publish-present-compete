@@ -19,7 +19,15 @@ build/
 *.jsonl
 !tests/fixtures/**/*.jsonl
 !traces/**/*.jsonl
-.prior/
+# Raw rows behind a research report are evidence of the same kind as traces/,
+# and the blanket rule swallowed them the same way: `l1-head-to-head.jsonl`
+# (380 rows, cited from docs/research/L1_HEAD_TO_HEAD.md) and
+# `decision-variants.jsonl` (3,040 rows, cited from
+# docs/research/DECISION_DECOMPOSITION_2026.md) were both on disk and invisible
+# to version control. Keep measured research rows; the runtime-ledger intent
+# stands for everything else.
+!docs/research/**/*.jsonl
+.consonance/
 /tmp/
 
 # ---- credentials: MUST never be committed ----
@@ -52,3 +60,9 @@ coverage/
 # ---- local scratch ----
 scratch/
 tmp/
+
+# Scratch for the Consonance convergence working session: an unzipped copy of
+# the source .docx (word/*.xml, docProps/, customXml/) plus extracted text and
+# the delta/agenda notes. The .docx original lives outside the repo; none of
+# this is repository material.
+.tmp-consonance/

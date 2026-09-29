@@ -1,10 +1,10 @@
-# CONSONANCE — Distributed Unified Verifiable Agent Layer
+# Consonance — Distributed Unified Verifiable Agent Layer
 
 > The engine has total authority and zero agency. The model has total agency and zero
 > authority. Neither can produce a side effect alone.
 
 Most agent systems grant capability broadly and then police it — system prompts, classifier
-guardrails, post-hoc monitoring, sandboxes that fire after escape. CONSONANCE does the opposite:
+guardrails, post-hoc monitoring, sandboxes that fire after escape. Consonance does the opposite:
 **each state transition materialises exactly the model, context, tools and skills that step
 requires, and the next transition revokes them.** The agent is never in a position to do the
 wrong thing, so there is nothing to police, nothing to refuse, and nothing to roll back.
@@ -13,7 +13,7 @@ wrong thing, so there is nothing to police, nothing to refuse, and nothing to ro
 
 The core primitive is a state that is a **continuation** — retrospective (what was decided and
 proven) and prospective (what may happen next) in one content-addressed object. Because truth
-and permission live in the same addressable thing, CONSONANCE can answer a question no other agent
+and permission live in the same addressable thing, Consonance can answer a question no other agent
 system can: *what did this state permit that the last one did not?*
 
 ---
@@ -116,7 +116,7 @@ Also not built: the Cordis port (M1), Merkle DAG persistence, distribution, sign
 
 | Doc | Contents |
 |---|---|
-| [`PRIOR-SUBSTRATE.md`](PRIOR-SUBSTRATE.md) | thesis, the continuation ontology, the USP, landscape |
+| [`CONSONANCE.md`](CONSONANCE.md) | thesis, the continuation ontology, the USP, landscape |
 | [`docs/STATE.md`](docs/STATE.md) | the envelope, canonical form, six facets, commit/replay/branch semantics |
 | [`docs/CLASSES.md`](docs/CLASSES.md) | `StateClass`, the catalogue, **the class IS the identity** |
 | [`docs/HASHING.md`](docs/HASHING.md) | `Hasher`/`Verifier`, BLAKE3 default, async commit, digest cache |
