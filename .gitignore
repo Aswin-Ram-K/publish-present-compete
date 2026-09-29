@@ -1,0 +1,17 @@
+# dependencies
+node_modules/
+.pnpm-store/
+
+# the product's own append-only log — data, not source
+data/
+
+# derived caches (rebuildable by a full re-poll; never facts)
+**/_adapter-cache/
+
+# build + test output
+dist/
+coverage/
+*.tsbuildinfo
+
+# local overrides of cockpit.config.json
+cockpit.config.local.json
