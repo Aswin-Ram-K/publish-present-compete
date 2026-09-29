@@ -1,17 +1,16 @@
-# dependencies
-node_modules/
-.pnpm-store/
-
-# the product's own append-only log — data, not source
+# Log is the author's own history, not project source. It is re-derivable by `pnpm ingest`.
 data/
 
-# derived caches (rebuildable by a full re-poll; never facts)
-**/_adapter-cache/
-
-# build + test output
+# Dependencies and build output
+node_modules/
+.pnpm-store/
 dist/
 coverage/
 *.tsbuildinfo
 
-# local overrides of cockpit.config.json
-cockpit.config.local.json
+# The root package has no dependencies of its own — it only delegates to app/.
+# Its lockfile is a build artifact of the deps check, not a real dependency set.
+/pnpm-lock.yaml
+
+# Local config overrides
+*.local.json
