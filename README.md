@@ -79,7 +79,7 @@ what a test should do. Both recorded in [`docs/DECISION_LOG.md`](docs/DECISION_L
 | Ungranted tools are **absent**, not denied | `unknown tool: net.fetch` from the broker — and `admit()` was invoked **zero times** during every probe |
 | refusals are first-class | A budget breach produces a **new state** with `verdict: refused`, the gate id, and no forward grant |
 | **The allowlist IS the bind-mount list** | bubblewrap: `ENETUNREACH` for network, `ENOENT` for un-mounted paths, `EROFS` for a read-only workspace — all **kernel** error codes |
-| The model is a **mediated capability** | A real completion (`"CONSONANCE_SAN"` from `deepseek-v4.1-flash`) returned to a sandbox that **cannot resolve DNS**; an ungranted model (`kimi-k3`) is refused by the broker |
+| The model is a **mediated capability** | A real completion from `deepseek-v4.1-flash` returned to a sandbox that **cannot resolve DNS**; an ungranted model (`kimi-k3`) is refused by the broker |
 | Gate ordering is a tested invariant | each gate surfaces when it is the first failure, proving every earlier gate delegated |
 | Commit is cheap | p50 **0.09 ms**, p95 **0.20 ms** against a 10 ms target |
 | Per-step materialisation is cheap | **16.7 ms** (bubblewrap 3.9 ms) — 500 steps ≈ 8 s total spawn overhead |
