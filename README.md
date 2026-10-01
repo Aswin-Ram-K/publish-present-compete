@@ -18,14 +18,32 @@ system can: *what did this state permit that the last one did not?*
 
 ---
 
-## Status — M0 complete, boundary closed, real model wired
+## Status — kernel at M0, boundary closed; the derivation programme is measured
 
 ```
-npm run suite        # offline: ab + gates + isolation + sandbox   (~20s)
+npm run suite        # offline: 13 entries — 12 suites, then the 6-eval layer
 npm run real-ab      # LIVE model through the mediated channel
 ```
 
-Individually: `npm run ab` · `npm run gates` · `npm run isolation` · `npm run sandbox` · `npm run real-ab`.
+Individually: `npm run ab` · `npm run gates` · `npm run isolation` · `npm run isolation-netns` ·
+`npm run loopback-relay` · `npm run sandbox` · `npm run dag` · `npm run dag-merge` ·
+`npm run commit-boundary` · `npm run adapter-conformance` · `npm run model-route` ·
+`npm run hosted-layer` · `npm run evals`.
+
+What has moved since the A/B below is the **derivation programme**: **eight pre-registered experiments,
+all EMERGE, all merged**, written up in
+[`docs/research/PAPER_DERIVATION.md`](docs/research/PAPER_DERIVATION.md) with every claim carrying its
+bound. Three **types** graduated from `tools/` into the kernel —
+[`src/observation.ts`](src/observation.ts), [`src/commit.ts`](src/commit.ts) and
+[`src/reference.ts`](src/reference.ts) — while **no engine moved**; promotion of a type is not
+promotion of a mechanism (D-052).
+
+The honest summary: the kernel is still M0, and the A/B below is still the result that matters. What
+is new is evidence — including the nulls, and one attractive long-horizon result (a 53.8 % token saving
+at identical success) that a pre-registered control made **void**. [`docs/DECISION_LOG.md`](docs/DECISION_LOG.md)
+D-001…D-056 is the record of what was decided and what was rejected, and
+[`docs/OPEN_DECISIONS.md`](docs/OPEN_DECISIONS.md) is what is still open. The open input at the bottom
+of this file has been answered (D-055).
 
 Requires **Node ≥ 24** and **bubblewrap** (`/usr/bin/bwrap`). The system Node here is v22.22.1, which
 was compiled **without** TypeScript support (`ERR_NO_TYPESCRIPT`); `scripts/run.sh` resolves a
@@ -108,7 +126,8 @@ any other.
 | No snapshot/fork | A branch re-materialises (16.7 ms) rather than forking. M2 will evaluate a branchable microVM — see [`docs/DECISION_LOG.md`](docs/DECISION_LOG.md) D-018. |
 | Linux only | Other platforms need a different primitive behind the same `SandboxSpec` interface. |
 
-Also not built: the Cordis port (M1), Merkle DAG persistence, distribution, signing.
+Also not built: the Capability Fabric, distribution, signing. The **Merkle DAG is built**
+(`src/dag.ts` on `node:sqlite`), as is the `SandboxSpec` backend interface.
 
 ---
 
@@ -125,7 +144,7 @@ Also not built: the Cordis port (M1), Merkle DAG persistence, distribution, sign
 | [`docs/M0.md`](docs/M0.md) | the two-week build and its acceptance criteria |
 | [`docs/LANDSCAPE.md`](docs/LANDSCAPE.md) | verified positioning and licence status, with sources |
 | [`docs/DECISION_LOG.md`](docs/DECISION_LOG.md) | every classification decision and the alternatives rejected |
-| [`docs/BACKLOG.md`](docs/BACKLOG.md) | 12 epics, 83 work items with acceptance criteria |
+| [`docs/BACKLOG.md`](docs/BACKLOG.md) | 14 epics, 99 work items with acceptance criteria |
 | [`docs/ADAPTERS.md`](docs/ADAPTERS.md) | hosting existing agents (Pi, opencode, Codex, …) as workers, with the per-capability guarantee |
 | [`docs/research/AGENT_HARNESSES_2026.md`](docs/research/AGENT_HARNESSES_2026.md) | the harness landscape, the five-subsystem model, and the measured evidence — with every claim labelled verified / reported / inference |
 
@@ -167,15 +186,21 @@ npm run ci                            # strict typecheck + offline suite
 ./scripts/sync-issues.sh --dry-run    # mirror docs/BACKLOG.md into GitHub issues
 ```
 
-Work is tracked in [`docs/BACKLOG.md`](docs/BACKLOG.md) — 12 epics, 83 items, each with acceptance
+Work is tracked in [`docs/BACKLOG.md`](docs/BACKLOG.md) — 14 epics, 99 items, each with acceptance
 criteria, dependencies, and an advisory write scope. Start with the phase order at the top.
 
 Read [`CONTRIBUTING.md`](CONTRIBUTING.md) before changing anything on the boundary, and
 [`AGENTS.md`](AGENTS.md) if you are an agent.
 
-## The one open input
+## The one open input — answered
 
 **What real task should M0's A/B run on?** It currently uses a self-contained code refactor so
 "success" is objectively checkable. Pointing it at something real — a KeyRing change, a the-host-harness
 plugin repair — turns the A/B into a measurement rather than a demonstration and fixes the real
 sandbox requirements.
+
+**Answered (D-055): the next real A/B runs on Consonance-on-Consonance.** It is the only candidate
+with no external dependency, so a difference in outcome is attributable to the kernel rather than to
+a second system's bugs. KeyRing and a the-host-harness plugin repair are better tests of *adoption* and come later,
+when there is a consumer to adopt. The run is pre-registered and budgeted in
+[`docs/research/HARNESS_COMPARISON_PLAN.md`](docs/research/HARNESS_COMPARISON_PLAN.md).

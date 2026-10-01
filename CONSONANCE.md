@@ -199,13 +199,51 @@ The thesis is disproved if any of these hold:
 
 ## 10. Documents
 
+**`docs/` holds the full set — 63 markdown files. These are the ones a new reader actually needs,
+grouped by what they are for.** A document not listed here is not thereby unreferenced; it is simply
+not a starting point. For the current project status and how to run it, start at
+[`README.md`](README.md); this file is the thesis, not the changelog.
+
+### 10.1 The kernel, and the record of what was decided
+
 | Doc | Contents |
 |---|---|
-| `docs/STATE.md` | the envelope, canonical form, six facets, commit/replay/branch semantics |
-| `docs/CLASSES.md` | `StateClass`, the catalogue, role-as-identity, versioned artefact rule |
-| `docs/HASHING.md` | `Hasher` / `Verifier` abstraction, BLAKE3 default, async commit, staged signing |
-| `docs/POLICY.md` | `plan()` and `admit()`, the prohibition model, engine-only authorship |
-| `docs/LAYERS.md` | `detached` / `attached` / `output-only`, materialisation, isolation test |
-| `docs/M0.md` | the two-week build and the A/B/replay/branch acceptance test |
-| `docs/LANDSCAPE.md` | verified positioning with sources |
-| `docs/DECISION_LOG.md` | classification decisions, rejected alternatives, reasons |
+| [`docs/STATE.md`](docs/STATE.md) | the envelope, canonical form, six facets, commit/replay/branch semantics |
+| [`docs/CLASSES.md`](docs/CLASSES.md) | `StateClass`, the catalogue, role-as-identity, versioned artefact rule |
+| [`docs/HASHING.md`](docs/HASHING.md) | `Hasher` / `Verifier` abstraction, BLAKE3 default, async commit, staged signing |
+| [`docs/POLICY.md`](docs/POLICY.md) | `plan()` and `admit()`, the prohibition model, engine-only authorship |
+| [`docs/LAYERS.md`](docs/LAYERS.md) | `detached` / `attached` / `output-only`, materialisation, isolation test |
+| [`docs/M0.md`](docs/M0.md) | the two-week build and the A/B/replay/branch acceptance test |
+| [`docs/LANDSCAPE.md`](docs/LANDSCAPE.md) | verified positioning with sources |
+| [`docs/DECISION_LOG.md`](docs/DECISION_LOG.md) | every classification decision, the alternatives rejected, and the reason — **the authority** |
+
+### 10.2 Building it, running it, and measuring it
+
+| Doc | Contents |
+|---|---|
+| [`docs/CONSONANCE_PLAN.md`](docs/CONSONANCE_PLAN.md) | the phase plan P0–P9; §7's decisions that gate them, each with the `D-0NN` that settled it |
+| [`docs/ADAPTERS.md`](docs/ADAPTERS.md) | hosting existing agents (Pi, opencode, Codex, …) as workers, and the **per-capability** guarantee |
+| [`docs/EVALS.md`](docs/EVALS.md) | what an eval is, its five kinds, and the anti-refactor rule; implementation in `evals/` |
+| [`docs/TRACES.md`](docs/TRACES.md) | the hash-chained record of how this is built — what is written, what is frozen, how to verify it |
+| [`docs/MISTAKES.md`](docs/MISTAKES.md) | the failure classes that have actually happened here, each with the detector that stops it |
+| [`docs/BACKLOG.md`](docs/BACKLOG.md) | 14 epics, 99 work items with acceptance criteria, plus the questions that were and were not answered |
+| [`docs/OPEN_DECISIONS.md`](docs/OPEN_DECISIONS.md) | everything still waiting on the operator, in tiers, with costs and recommendations |
+
+### 10.3 The measurements, and what they changed
+
+| Doc | Contents |
+|---|---|
+| [`docs/research/PAPER_DERIVATION.md`](docs/research/PAPER_DERIVATION.md) | the derivation programme written up as a paper — every experiment, every claim, and its bound |
+| [`docs/research/EXPERIMENT_PROGRAMME.md`](docs/research/EXPERIMENT_PROGRAMME.md) | the pre-registration discipline: **EMERGE** / **CLOSE**, and what each experiment must falsify |
+| [`docs/research/experiments/LEARNINGS.md`](docs/research/experiments/LEARNINGS.md) | method learnings and instrument defects, harvested from closed branches — a closed branch is a result |
+| [`docs/research/SM_PILOT_RESULTS.md`](docs/research/SM_PILOT_RESULTS.md) | the projection-vs-history pilots: token savings, and the attractive run a control made **void** |
+| [`docs/research/HARNESS_COMPARISON_PLAN.md`](docs/research/HARNESS_COMPARISON_PLAN.md) | the pre-registered, budgeted comparison run (D-055) — the next real A/B |
+| [`docs/research/AGENT_HARNESSES_2026.md`](docs/research/AGENT_HARNESSES_2026.md) | the harness landscape, every claim labelled verified / reported / inference |
+| [`docs/research/BIOMAP/README.md`](docs/research/BIOMAP/README.md) | the bio-intelligence mapping — start with `BIOMAP_VERDICT.md`; this is the evidence behind it |
+
+### 10.4 Where the thinking came from
+
+| Doc | Contents |
+|---|---|
+| [`docs/consolidation/README.md`](docs/consolidation/README.md) | the consolidation pass: seven handoffs reconciled against the code. **Discussion — nothing here is a decision.** |
+| [`source-material/README.md`](source-material/README.md) | the external inputs this was built from, now preserved in the repository. **Inputs, not design** — where they and the decision log disagree, the decision log wins. |
