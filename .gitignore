@@ -62,7 +62,8 @@ scratch/
 tmp/
 
 # Scratch for the Consonance convergence working session: an unzipped copy of
-# the source .docx (word/*.xml, docProps/, customXml/) plus extracted text and
-# the delta/agenda notes. The .docx original lives outside the repo; none of
-# this is repository material.
+# the source .docx (word/*.xml, docProps/, customXml/) plus extracted text. The
+# .docx original lives outside the repo; none of this is repository material.
+# The delta/agenda notes used to live here too; they are about two identities
+# and now sit in archive/ where a transition document belongs (D-050).
 .tmp-consonance/
