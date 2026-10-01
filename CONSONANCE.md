@@ -3,7 +3,8 @@
 **Status:** thesis baseline, 2026-09-28
 **Substrate:** Consonance's own engine. Cordis is a **design ancestor, not a dependency**: its
 spatiotemporal primitives (scope as space, the load/dispose lifecycle as time) and its underlying bus
-elements are **forked into the engine**, and Consonance's own primitives — state, lease, capability —
+elements are **planned to be forked into the engine** — design lineage, not a build claim (D-057:
+  neither primitive is implemented in `src/` today) — and Consonance's own primitives — state, lease, capability —
 are induced into the engine itself rather than layered onto a foreign container. `src/` imports no
 Cordis (D-014). the-host-harness is consulted only as a reference for plugin-packaging behaviour.
 **Core primitive:** the state (§`docs/STATE.md`)
