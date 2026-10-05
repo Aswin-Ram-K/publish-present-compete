@@ -205,7 +205,7 @@ reference material. Nothing in either is normative, and neither is cited as curr
 | [`docs/CLASSES.md`](docs/CLASSES.md) | `StateClass`, the catalogue, **the class IS the identity** |
 | [`docs/HASHING.md`](docs/HASHING.md) | `Hasher`/`Verifier`, BLAKE3 default, async commit, digest cache |
 | [`docs/POLICY.md`](docs/POLICY.md) | `plan()` / `admit()`, **allowlist not denylist** |
-| [`docs/LAYERS.md`](docs/LAYERS.md) | the three layer types, materialisation, the host allowlist, **the isolation acceptance test** |
+| [`docs/LAYERS.md`](docs/LAYERS.md) | the layer types, materialisation, the host allowlist, **the isolation acceptance test** |
 | [`docs/M0.md`](docs/M0.md) | the two-week build and its acceptance criteria (plan snapshot) |
 | [`docs/LANDSCAPE.md`](docs/LANDSCAPE.md) | verified positioning and licence status, with sources |
 | [`docs/DECISION_LOG.md`](docs/DECISION_LOG.md) | every classification decision and the alternatives rejected |
