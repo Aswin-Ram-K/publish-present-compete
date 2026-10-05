@@ -200,10 +200,14 @@ The thesis is disproved if any of these hold:
 
 ## 10. Documents
 
-**`docs/` holds the full set — 63 markdown files. These are the ones a new reader actually needs,
+**`docs/` holds the full set — 84 markdown files. These are the ones a new reader actually needs,
 grouped by what they are for.** A document not listed here is not thereby unreferenced; it is simply
 not a starting point. For the current project status and how to run it, start at
 [`README.md`](README.md); this file is the thesis, not the changelog.
+
+**Errata (2026-10-04).** It said **63** markdown files.
+`git ls-tree -r HEAD --name-only docs | grep -c '\.md$'` → **84**, and the set grows as documents land;
+the number is a measurement with a date, not a constant.
 
 ### 10.1 The kernel, and the record of what was decided
 
