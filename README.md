@@ -1,5 +1,11 @@
 # Consonance — Distributed Unified Verifiable Agent Layer
 
+[![CI](https://github.com/Aswin-Ram-K/Consonance/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/Aswin-Ram-K/Consonance/actions/workflows/ci.yml)
+[![Docs](https://github.com/Aswin-Ram-K/Consonance/actions/workflows/docs.yml/badge.svg?branch=main)](https://github.com/Aswin-Ram-K/Consonance/actions/workflows/docs.yml)
+[![License: AGPL-3.0](https://img.shields.io/badge/license-AGPL--3.0-blue.svg)](LICENSE)
+[![Node](https://img.shields.io/badge/node-%3E%3D24-brightgreen.svg)](https://nodejs.org)
+[![Status: M0](https://img.shields.io/badge/status-M0%20kernel-orange.svg)](docs/M0.md)
+
 > The engine has total authority and zero agency. The model has total agency and zero
 > authority. Neither can produce a side effect alone.
 
@@ -16,38 +22,51 @@ proven) and prospective (what may happen next) in one content-addressed object. 
 and permission live in the same addressable thing, Consonance can answer a question no other agent
 system can: *what did this state permit that the last one did not?*
 
+**New here? Read [`docs/README.md`](docs/README.md)** — the index of the whole document set, each
+document with its status tag — then [`CONSONANCE.md`](CONSONANCE.md) for the thesis, then the
+[`docs/DECISION_LOG.md`](docs/DECISION_LOG.md) for why everything is the way it is.
+
 ---
 
-## Status — kernel at M0, boundary closed; the derivation programme is measured
+## Status — kernel at M0; the boundary is closed and the derivation programme is measured
 
 ```
-npm run suite        # offline: 13 entries — 12 suites, then the 6-eval layer
-npm run real-ab      # LIVE model through the mediated channel
+npm run ci           # typecheck + docs gate + the offline suite (23 entries)
+npm run real-ab      # LIVE model through the mediated channel — NOT part of CI
 ```
 
-Individually: `npm run ab` · `npm run gates` · `npm run isolation` · `npm run isolation-netns` ·
-`npm run loopback-relay` · `npm run sandbox` · `npm run dag` · `npm run dag-merge` ·
-`npm run commit-boundary` · `npm run adapter-conformance` · `npm run model-route` ·
-`npm run hosted-layer` · `npm run evals`.
+The offline suite is **23 entries**: 22 suites, then the eval layer (6 evals). `npm run ci` adds the
+strict typecheck and the documentation audit; the suite alone is `npm run suite`. Neither needs a
+model, a broker or a credential — a suite that silently skips is worse than no suite, so the live A/B
+lives in [`.github/workflows/live.yml`](.github/workflows/live.yml) on a runner that owns a broker.
 
-What has moved since the A/B below is the **derivation programme**: **eight pre-registered experiments,
-all EMERGE, all merged**, written up in
-[`docs/research/PAPER_DERIVATION.md`](docs/research/PAPER_DERIVATION.md) with every claim carrying its
-bound. Three **types** graduated from `tools/` into the kernel —
-[`src/observation.ts`](src/observation.ts), [`src/commit.ts`](src/commit.ts) and
-[`src/reference.ts`](src/reference.ts) — while **no engine moved**; promotion of a type is not
-promotion of a mechanism (D-052).
+As of **2026-10-04**: **73 decisions** are recorded ([`docs/DECISION_LOG.md`](docs/DECISION_LOG.md),
+D-001 onward — every classification choice and the alternatives that were rejected), the tree holds
+**86 documents under `docs/`** and 11 pre-registered experiment documents. The
+[`docs/BACKLOG.md`](docs/BACKLOG.md) carries **14 epics and 99 work items** with acceptance criteria
+and advisory write scopes.
 
-The honest summary: the kernel is still M0, and the A/B below is still the result that matters. What
-is new is evidence — including the nulls, and one attractive long-horizon result (a 53.8 % token saving
-at identical success) that a pre-registered control made **void**. [`docs/DECISION_LOG.md`](docs/DECISION_LOG.md)
-D-001…D-056 is the record of what was decided and what was rejected, and
-[`docs/OPEN_DECISIONS.md`](docs/OPEN_DECISIONS.md) is what is still open. The open input at the bottom
-of this file has been answered (D-055).
+### What the derivation programme found
 
-Requires **Node ≥ 24** and **bubblewrap** (`/usr/bin/bwrap`). The system Node here is v22.22.1, which
-was compiled **without** TypeScript support (`ERR_NO_TYPESCRIPT`); `scripts/run.sh` resolves a
-suitable Node automatically, or set `CONSONANCE_NODE=/path/to/node24`.
+Eleven pre-registered experiments, each with a **falsifier written before the code ran**
+([`docs/research/experiments/`](docs/research/experiments/)):
+
+| Outcome | Experiments | What it means |
+|---|---|---|
+| **8 EMERGE** | EXP#1–#7, #3b | The falsifier did not fire, the method worked, and the method was merged. Three **types** graduated from `tools/` into the kernel — [`src/observation.ts`](src/observation.ts), [`src/commit.ts`](src/commit.ts), [`src/reference.ts`](src/reference.ts) — while **no engine moved**: promotion of a type is not promotion of a mechanism (D-052). |
+| **2 CLOSE** | EXP#10, EXP#11 | The method did **not** work; the learnings were harvested into [`LEARNINGS.md`](docs/research/experiments/LEARNINGS.md) and the branch was left unmerged. A closed branch is a result, not a loss. |
+| **1 pre-registered, not run** | EXP#12 | The typed-channel comparison, pre-registered with its falsifier, awaiting its budget. |
+
+The honest summary: **the kernel is still M0, and the A/B below is still the result that matters.**
+What the programme added is evidence — including the nulls, and one attractive long-horizon result
+(a 53.8 % token saving at identical success) that a pre-registered control made **void**. Every claim
+in [`docs/research/PAPER_DERIVATION.md`](docs/research/PAPER_DERIVATION.md) carries its bound.
+What is still open, and what waits on the operator, is in [`docs/OPEN_DECISIONS.md`](docs/OPEN_DECISIONS.md)
+and the decision queue on [`docs/BOARD.md`](docs/BOARD.md).
+
+Requires **Node ≥ 24** and **bubblewrap** (`/usr/bin/bwrap`). The system Node on the reference machine
+is v22.22.1, which was compiled **without** TypeScript support (`ERR_NO_TYPESCRIPT`); `scripts/run.sh`
+resolves a suitable Node automatically, or set `CONSONANCE_NODE=/path/to/node24`.
 
 ---
 
@@ -99,7 +118,7 @@ what a test should do. Both recorded in [`docs/DECISION_LOG.md`](docs/DECISION_L
 | **The allowlist IS the bind-mount list** | bubblewrap: `ENETUNREACH` for network, `ENOENT` for un-mounted paths, `EROFS` for a read-only workspace — all **kernel** error codes |
 | The model is a **mediated capability** | A real completion from `deepseek-v4.1-flash` returned to a sandbox that **cannot resolve DNS**; an ungranted model (`kimi-k3`) is refused by the broker |
 | Gate ordering is a tested invariant | each gate surfaces when it is the first failure, proving every earlier gate delegated |
-| Commit is cheap | p50 **0.09 ms**, p95 **0.20 ms** against a 10 ms target |
+| Commit is cheap | the M0 run measured p50 **0.09 ms**, p95 **0.20 ms** against a 10 ms target; the current budget baseline lives in [`evals/baseline.json`](evals/baseline.json) |
 | Per-step materialisation is cheap | **16.7 ms** (bubblewrap 3.9 ms) — 500 steps ≈ 8 s total spawn overhead |
 
 ### How the boundary actually works
@@ -108,26 +127,71 @@ what a test should do. Both recorded in [`docs/DECISION_LOG.md`](docs/DECISION_L
 sandbox (NO IP network) ──unix socket──▶ engine broker ──HTTPS──▶ model endpoint
 ```
 
-bubblewrap runs with `--unshare-all`, `--ro-bind / /`, and each granted path re-bound with its
-granted mode. A layer reaches **exactly what was mounted** and nothing else. There is no denylist,
-no policy engine inside the sandbox, and no ambient capability to constrain — **absence is achieved
-by not mounting.**
+bubblewrap runs with `--unshare-all` and **an explicit host allowlist** — not a blanket bind. A layer
+reaches **exactly what was mounted** and nothing else: the workspace in its granted mode, the
+per-layer grants, and the ~11 runtime paths a sandboxed Node needs to start
+(`HOST_ALLOWLIST` in [`src/sandbox.ts`](src/sandbox.ts): the Node runtime prefix, `/usr` and the lib
+directories, the dynamic linker's cache and config, `/etc/passwd` + `/etc/nsswitch.conf`, and
+`/dev/{null,urandom,zero}`).
 
-The model call is mediated because a unix socket crosses a network namespace as a filesystem
-object. So the sandbox needs no network at all, and the model becomes a granted capability like
-any other.
+**E10-1 closed the worst gap in the project.** `buildArgv()` used to open with `--ro-bind / /` — the
+entire host, read-only, visible to every sandbox; a probe could `stat` `/root`, `/etc/shadow` and the
+whole of `/home`. It is now an allowlist, and the same probe returns `ENOENT` for all three. There is
+still no denylist, no policy engine inside the sandbox, and no ambient capability to constrain —
+**absence is achieved by not mounting.** [`docs/LAYERS.md`](docs/LAYERS.md) §6.2 has the before/after
+probe output.
+
+The model call is mediated because a unix socket crosses a network namespace as a filesystem object.
+So the sandbox needs no network at all, and the model becomes a granted capability like any other.
 
 ### ⚠ Remaining limits, stated honestly
 
 | Limit | Consequence |
 |---|---|
 | Shared kernel | Not a VM boundary — a kernel exploit escapes. Fine for model-generated *actions*; reconsider for adversarial binaries. |
-| `--ro-bind / /` | The whole host is visible read-only. Narrow this to the workspace + toolchain before running third-party code. |
+| `/usr` and the runtime are visible read-only | The allowlist is what a Node runtime needs to start, not a minimal set for your workload. Narrow it further before running third-party code. |
 | No snapshot/fork | A branch re-materialises (16.7 ms) rather than forking. M2 will evaluate a branchable microVM — see [`docs/DECISION_LOG.md`](docs/DECISION_LOG.md) D-018. |
 | Linux only | Other platforms need a different primitive behind the same `SandboxSpec` interface. |
+| AppArmor userns restriction | On Ubuntu 24.04+, user-namespace paths can fail (observed: `unshare --map-root-user --net` → *Operation not permitted*) while `bwrap --unshare-all` still works. Test the actual tool; do not assume the flag. |
+| Resource-limit headroom | `RLIMIT_NPROC` counts threads and `RLIMIT_AS` must exceed the runtime's own reservation — set too low and the sandbox refuses its *own* Node. Measured minimums are in [`docs/LAYERS.md`](docs/LAYERS.md) §6.6. |
 
 Also not built: the Capability Fabric, distribution, signing. The **Merkle DAG is built**
-(`src/dag.ts` on `node:sqlite`), as is the `SandboxSpec` backend interface.
+([`src/dag.ts`](src/dag.ts) on `node:sqlite`), as is the `SandboxSpec` backend interface.
+[`docs/M0.md`](docs/M0.md) is the original two-week plan and its acceptance criteria — it is a plan
+snapshot, and where reality moved past it the document says so.
+
+---
+
+## Repository layout
+
+```
+src/
+  state.ts       the core primitive (docs/STATE.md)          catalog.ts      StateClass registry (docs/CLASSES.md)
+  hash.ts        the single cryptographic entry point        policy.ts       plan() and admit() (docs/POLICY.md)
+  objects.ts     the object side of commit-vs-object         commit.ts       StateCommit: D-023's unit of propagation
+  dag.ts         durable Merkle DAG over the state chain     store.ts        M0 state storage
+  replay.ts      replay, diff (with grant delta), branch     observation.ts  the append-only observation stream
+  reference.ts   a typed pointer into the object graph       transitions.ts  the declaration registry (D-042)
+  scope.ts       the ONE reader of CapabilityGrant.scope     decisions.ts    the decision recorder (D-072)
+  constitution.ts  the pinned root; refuses to start on mismatch
+  layer.ts       materialisation + the logical boundary      sandbox.ts      the physical boundary, on bubblewrap
+  broker.ts      the mediated capability channel             worker-sandboxed.ts  the REAL worker, inside the sandbox
+  loop.ts        the state cycle                             lifecycle.ts    explicit load/dispose over a tree
+  probe.ts       helper injected into sandbox probe scripts  index.ts        public surface
+  adapter.ts     the AgentAdapter contract                   adapters/       hosted-agent implementations
+  mcp.ts         MCP transport for a hosted layer            mcp-stdio.ts    the stdio transport
+  proxy.ts       the OpenAI-compatible model route
+examples/
+  ab-demo.ts         §4.1–4.5 acceptance test (mechanism)    isolation-test.ts  §4.6 logical boundary (Node --permission)
+  sandbox-test.ts    §4.6 physical boundary (bubblewrap + mediated model)
+tests/  evals/  tools/  scripts/  constitution/  docs/  archive/  traces/
+  the conformance suites, the eval layer, the derivation tools, the gate scripts, the
+  code-pinned constitution, the document set, the retired framing, and the hash-chained evidence corpus
+```
+
+Two directories are deliberately **not** maintained and are labelled so: [`archive/`](archive/README.md)
+holds the retired framing byte-identical to the version that was moved, and `source-material/` holds
+reference material. Nothing in either is normative, and neither is cited as current design.
 
 ---
 
@@ -135,72 +199,72 @@ Also not built: the Capability Fabric, distribution, signing. The **Merkle DAG i
 
 | Doc | Contents |
 |---|---|
+| [`docs/README.md`](docs/README.md) | **The index of the whole doc set** — every document, with its status tag. Start here. |
 | [`CONSONANCE.md`](CONSONANCE.md) | thesis, the continuation ontology, the USP, landscape |
 | [`docs/STATE.md`](docs/STATE.md) | the envelope, canonical form, six facets, commit/replay/branch semantics |
 | [`docs/CLASSES.md`](docs/CLASSES.md) | `StateClass`, the catalogue, **the class IS the identity** |
 | [`docs/HASHING.md`](docs/HASHING.md) | `Hasher`/`Verifier`, BLAKE3 default, async commit, digest cache |
 | [`docs/POLICY.md`](docs/POLICY.md) | `plan()` / `admit()`, **allowlist not denylist** |
-| [`docs/LAYERS.md`](docs/LAYERS.md) | the three layer types, materialisation, **the isolation acceptance test** |
-| [`docs/M0.md`](docs/M0.md) | the two-week build and its acceptance criteria |
+| [`docs/LAYERS.md`](docs/LAYERS.md) | the three layer types, materialisation, the host allowlist, **the isolation acceptance test** |
+| [`docs/M0.md`](docs/M0.md) | the two-week build and its acceptance criteria (plan snapshot) |
 | [`docs/LANDSCAPE.md`](docs/LANDSCAPE.md) | verified positioning and licence status, with sources |
 | [`docs/DECISION_LOG.md`](docs/DECISION_LOG.md) | every classification decision and the alternatives rejected |
+| [`docs/OPEN_DECISIONS.md`](docs/OPEN_DECISIONS.md) | the closed-history table; the live queue is on [`docs/BOARD.md`](docs/BOARD.md) |
 | [`docs/BACKLOG.md`](docs/BACKLOG.md) | 14 epics, 99 work items with acceptance criteria |
+| [`docs/EVALS.md`](docs/EVALS.md) | the eval layer: kinds, budgets, drift checks, what skips rather than passes |
+| [`docs/TRACES.md`](docs/TRACES.md) | the append-only, hash-chained evidence corpus and its verifier |
 | [`docs/ADAPTERS.md`](docs/ADAPTERS.md) | hosting existing agents (Pi, opencode, Codex, …) as workers, with the per-capability guarantee |
-| [`docs/research/AGENT_HARNESSES_2026.md`](docs/research/AGENT_HARNESSES_2026.md) | the harness landscape, the five-subsystem model, and the measured evidence — with every claim labelled verified / reported / inference |
-
----
-
-## Layout
-
-```
-src/
-  hash.ts      Hasher/Verifier, canonical form, digest cache
-  state.ts     State envelope, StateClass, content addressing
-  catalog.ts   class registry + the two native classes
-  policy.ts    plan() allowlist construction, admit() gate chain
-  layer.ts     logical materialisation, Broker, in-process boundary
-  sandbox.ts   physical boundary: bubblewrap argv, workspace modes, probe script
-  broker.ts    mediated capability channel (unix socket) + model allowlist
-  store.ts     in-memory + JSONL (commit per transition)
-  loop.ts      the cycle; ScriptedWorker (in-process, mechanism tests)
-  worker-sandboxed.ts  the REAL worker: runs inside the sandbox, model via broker
-  replay.ts    replay, diff (with grant delta), branch
-examples/
-  ab-demo.ts         §4.1–4.5 acceptance test (mechanism)
-  isolation-test.ts  §4.6 logical boundary (Node --permission)
-  sandbox-test.ts    §4.6 physical boundary (bubblewrap + mediated model)
-tests/
-  gate-delegation.ts POLICY.md §3 conformance
-scripts/
-  run.sh             resolves a Node with TypeScript support, then execs
-```
-
----
+| [`docs/MISTAKES.md`](docs/MISTAKES.md) | the failures that produced the standing rules — read before writing a check |
+| [`docs/DOCS_POLICY.md`](docs/DOCS_POLICY.md) | **how the documentation is kept true**, and the gate that enforces it |
+| [`docs/research/PAPER_DERIVATION.md`](docs/research/PAPER_DERIVATION.md) | the derivation paper — every claim with its bound |
+| [`docs/research/AGENT_HARNESSES_2026.md`](docs/research/AGENT_HARNESSES_2026.md) | the harness landscape, the five-subsystem model, and the measured evidence — each claim labelled verified / reported / inference |
 
 ## Getting set up
 
 ```bash
+git clone https://github.com/Aswin-Ram-K/Consonance.git && cd Consonance
 npm install
-git config core.hooksPath .githooks   # pre-commit typecheck + guardrails
-npm run ci                            # strict typecheck + offline suite
+git config core.hooksPath .githooks   # pre-commit: typecheck + guardrails + docs gate
+npm run ci                            # typecheck + docs gate + the offline suite
 ./scripts/sync-issues.sh --dry-run    # mirror docs/BACKLOG.md into GitHub issues
 ```
 
-Work is tracked in [`docs/BACKLOG.md`](docs/BACKLOG.md) — 14 epics, 99 items, each with acceptance
-criteria, dependencies, and an advisory write scope. Start with the phase order at the top.
+Work is tracked in [`docs/BACKLOG.md`](docs/BACKLOG.md) — each item has acceptance criteria,
+dependencies, and an advisory write scope. Start with the phase order at the top.
 
 Read [`CONTRIBUTING.md`](CONTRIBUTING.md) before changing anything on the boundary, and
-[`AGENTS.md`](AGENTS.md) if you are an agent.
+[`AGENTS.md`](AGENTS.md) if an autonomous agent is doing the work.
 
-## The one open input — answered
+## Keeping the documentation true
 
-**What real task should M0's A/B run on?** It currently uses a self-contained code refactor so
-"success" is objectively checkable. Pointing it at something real — a KeyRing change, a the-host-harness
-plugin repair — turns the A/B into a measurement rather than a demonstration and fixes the real
-sandbox requirements.
+This repository is built largely by autonomous agents, on many branches, and its claim is that its
+history is trustworthy — so a document that describes yesterday's code is treated as a defect, not as
+an oversight. [`docs/DOCS_POLICY.md`](docs/DOCS_POLICY.md) is the rule, and it is enforced by
+[`scripts/docs-gate.mjs`](scripts/docs-gate.mjs) in three places at once: the **pre-commit hook** (every
+commit, every branch), the **[`docs` workflow](.github/workflows/docs.yml)** (every push, every branch,
+plus a weekly whole-tree audit), and **`npm run ci`**.
 
-**Answered (D-055): the next real A/B runs on Consonance-on-Consonance.** It is the only candidate
-with no external dependency, so a difference in outcome is attributable to the kernel rather than to
-a second system's bugs. KeyRing and a the-host-harness plugin repair are better tests of *adoption* and come later,
-when there is a consumer to adopt. The run is pre-registered and budgeted in
-[`docs/research/HARNESS_COMPARISON_PLAN.md`](docs/research/HARNESS_COMPARISON_PLAN.md).
+It checks two kinds of thing. **Structural**: ledgers are append-only byte for byte, experiment
+pre-registrations are frozen against `scripts/docs-gate.frozen.json`, every document is listed in the
+index, and every relative link resolves. **Correspondence**: the map
+([`scripts/docs-gate.map.json`](scripts/docs-gate.map.json)) names which document a changed source file
+makes false, and a change that makes no document false must say so in writing with a
+`Docs-Impact: none — <reason>` trailer. The gate's own instrument test
+(`npm run docs-gate:selftest`) shows every check reporting the opposite of what it normally reports —
+a check that has only ever passed has unknown failures.
+
+## Contributing, security, licence
+
+- **[`CONTRIBUTING.md`](CONTRIBUTING.md)** — standing rules, local setup, the command reference, and the
+  PR checklist.
+- **[`SECURITY.md`](SECURITY.md)** — report a boundary escape **privately**; what counts as a
+  vulnerability here and what does not. A policy-worded "denied" is itself the bug: enforcement is
+  absence, and absence surfaces as `ENOENT` / `ENETUNREACH` / `EROFS` / `TypeError`.
+- **[`CODE_OF_CONDUCT.md`](CODE_OF_CONDUCT.md)** — Contributor Covenant v2.1, and how to report.
+- **[`SUPPORT.md`](SUPPORT.md)** — where to ask, what to include, and what is out of scope (there is no
+  SLA, stated up front).
+- **[`CITATION.cff`](CITATION.cff)** — how to cite this work.
+- **[`LICENSE`](LICENSE)** — **AGPL-3.0**. Consonance is a network service kernel: if you run a modified
+  version and let others interact with it over a network, the AGPL requires you to offer them the
+  corresponding source. That is deliberate — the isolation claims are only checkable against the code
+  that makes them.
