@@ -31,11 +31,11 @@ document with its status tag — then [`CONSONANCE.md`](CONSONANCE.md) for the t
 ## Status — kernel at M0; the boundary is closed and the derivation programme is measured
 
 ```
-npm run ci           # typecheck + docs gate + the offline suite (23 entries)
+npm run ci           # typecheck + docs gate + the offline suite (26 entries)
 npm run real-ab      # LIVE model through the mediated channel — NOT part of CI
 ```
 
-The offline suite is **23 entries**: 22 suites, then the eval layer (6 evals). `npm run ci` adds the
+The offline suite is **26 entries**: 25 suites, then the eval layer (6 evals). `npm run ci` adds the
 strict typecheck and the documentation audit; the suite alone is `npm run suite`. Neither needs a
 model, a broker or a credential — a suite that silently skips is worse than no suite, so the live A/B
 lives in [`.github/workflows/live.yml`](.github/workflows/live.yml) on a runner that owns a broker.
