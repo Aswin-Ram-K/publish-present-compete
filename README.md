@@ -31,11 +31,11 @@ document with its status tag — then [`CONSONANCE.md`](CONSONANCE.md) for the t
 ## Status — kernel at M0; the boundary is closed and the derivation programme is measured
 
 ```
-npm run ci           # typecheck + docs gate + the offline suite (23 entries)
+npm run ci           # typecheck + docs gate + the offline suite (27 entries)
 npm run real-ab      # LIVE model through the mediated channel — NOT part of CI
 ```
 
-The offline suite is **23 entries**: 22 suites, then the eval layer (6 evals). `npm run ci` adds the
+The offline suite is **27 entries**: 26 suites, then the eval layer (6 evals). `npm run ci` adds the
 strict typecheck and the documentation audit; the suite alone is `npm run suite`. Neither needs a
 model, a broker or a credential — a suite that silently skips is worse than no suite, so the live A/B
 lives in [`.github/workflows/live.yml`](.github/workflows/live.yml) on a runner that owns a broker.
@@ -205,7 +205,7 @@ reference material. Nothing in either is normative, and neither is cited as curr
 | [`docs/CLASSES.md`](docs/CLASSES.md) | `StateClass`, the catalogue, **the class IS the identity** |
 | [`docs/HASHING.md`](docs/HASHING.md) | `Hasher`/`Verifier`, BLAKE3 default, async commit, digest cache |
 | [`docs/POLICY.md`](docs/POLICY.md) | `plan()` / `admit()`, **allowlist not denylist** |
-| [`docs/LAYERS.md`](docs/LAYERS.md) | the three layer types, materialisation, the host allowlist, **the isolation acceptance test** |
+| [`docs/LAYERS.md`](docs/LAYERS.md) | the layer types, materialisation, the host allowlist, **the isolation acceptance test** |
 | [`docs/M0.md`](docs/M0.md) | the two-week build and its acceptance criteria (plan snapshot) |
 | [`docs/LANDSCAPE.md`](docs/LANDSCAPE.md) | verified positioning and licence status, with sources |
 | [`docs/DECISION_LOG.md`](docs/DECISION_LOG.md) | every classification decision and the alternatives rejected |
