@@ -1,7 +1,5 @@
 # Consonance — Distributed Unified Verifiable Agent Layer
 
-[![CI](https://github.com/Aswin-Ram-K/Consonance/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/Aswin-Ram-K/Consonance/actions/workflows/ci.yml)
-[![Docs](https://github.com/Aswin-Ram-K/Consonance/actions/workflows/docs.yml/badge.svg?branch=main)](https://github.com/Aswin-Ram-K/Consonance/actions/workflows/docs.yml)
 [![License: AGPL-3.0](https://img.shields.io/badge/license-AGPL--3.0-blue.svg)](LICENSE)
 [![Node](https://img.shields.io/badge/node-%3E%3D24-brightgreen.svg)](https://nodejs.org)
 [![Status: M0](https://img.shields.io/badge/status-M0%20kernel-orange.svg)](docs/M0.md)
@@ -32,13 +30,15 @@ document with its status tag — then [`CONSONANCE.md`](CONSONANCE.md) for the t
 
 ```
 npm run ci           # typecheck + docs gate + the offline suite (27 entries)
-npm run real-ab      # LIVE model through the mediated channel — NOT part of CI
+npm run real-ab      # LIVE model through the mediated channel — NOT part of the gate
 ```
 
 The offline suite is **27 entries**: 26 suites, then the eval layer (6 evals). `npm run ci` adds the
 strict typecheck and the documentation audit; the suite alone is `npm run suite`. Neither needs a
-model, a broker or a credential — a suite that silently skips is worse than no suite, so the live A/B
-lives in [`.github/workflows/live.yml`](.github/workflows/live.yml) on a runner that owns a broker.
+model, a broker or a credential — a suite that silently skips is worse than no suite — so the live A/B
+is `npm run real-ab`, run **by hand** on a host that owns a broker. **It has no runner.** GitHub
+Actions was removed from this repository by **D-091**, which also means the gate itself is now local:
+`npm run ci` is run on the machine that wrote the code, and its output is quoted rather than assumed.
 
 As of **2026-10-04**: **73 decisions** are recorded ([`docs/DECISION_LOG.md`](docs/DECISION_LOG.md),
 D-001 onward — every classification choice and the alternatives that were rejected), the tree holds
@@ -240,13 +240,18 @@ Read [`CONTRIBUTING.md`](CONTRIBUTING.md) before changing anything on the bounda
 This repository is built largely by autonomous agents, on many branches, and its claim is that its
 history is trustworthy — so a document that describes yesterday's code is treated as a defect, not as
 an oversight. [`docs/DOCS_POLICY.md`](docs/DOCS_POLICY.md) is the rule, and it is enforced by
-[`scripts/docs-gate.mjs`](scripts/docs-gate.mjs) in three places at once: the **pre-commit hook** (every
-commit, every branch), the **[`docs` workflow](.github/workflows/docs.yml)** (every push, every branch,
-plus a weekly whole-tree audit), and **`npm run ci`**.
+[`scripts/docs-gate.mjs`](scripts/docs-gate.mjs) in two places: the **commit hook** (every commit, every
+branch) and **`npm run ci`** (the whole-tree audit). **It was three until D-091**, which removed GitHub
+Actions: the third was a `docs` workflow that ran the change set on every push to every branch, every
+pull request and weekly. That was the only copy of the rule that ran somewhere the writer did not
+control, and it is gone — so every remaining run is on the machine that made the change.
 
 It checks two kinds of thing. **Structural**: ledgers are append-only byte for byte, experiment
 pre-registrations are frozen against `scripts/docs-gate.frozen.json`, every document is listed in the
-index, and every relative link resolves. **Correspondence**: the map
+index, and every relative link resolves — with one narrow exception that D-091 forced and
+`docs/DOCS_POLICY.md` states: a dead link **inside an append-only ledger** is reported and not failed,
+because a ledger's bytes can never be corrected and the alternative is that no file a ledger ever cited
+could ever be deleted. **Correspondence**: the map
 ([`scripts/docs-gate.map.json`](scripts/docs-gate.map.json)) names which document a changed source file
 makes false, and a change that makes no document false must say so in writing with a
 `Docs-Impact: none — <reason>` trailer. The gate's own instrument test
