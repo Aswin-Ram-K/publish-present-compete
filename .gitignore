@@ -73,3 +73,9 @@ tmp/
 # machine-specific and a stale one in the tree would be read as a current claim.
 .cov/
 .cov2/
+
+# ---- self-build run artefacts ----
+# Per-run evidence: journal, status, logs, summary. Local to the machine that ran it and NEVER
+# committed -- a stale run directory in the tree would be read as a current claim. The layout is
+# specified in docs/DASHBOARD.md section 5; the spec is tracked, the artefacts are not.
+runs/
