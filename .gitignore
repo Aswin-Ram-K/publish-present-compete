@@ -67,3 +67,9 @@ tmp/
 # The delta/agenda notes used to live here too; they are about two identities
 # and now sit in archive/ where a transition document belongs (D-050).
 .tmp-consonance/
+
+# ---- self-build run artefacts ----
+# Per-run evidence: journal, status, logs, summary. Local to the machine that ran it and NEVER
+# committed -- a stale run directory in the tree would be read as a current claim. The layout is
+# specified in docs/DASHBOARD.md section 5; the spec is tracked, the artefacts are not.
+runs/
