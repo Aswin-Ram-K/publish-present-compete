@@ -1,134 +1,113 @@
-# cockpit
+# cockpit + Consonance
 
-**One local system that watches everything I do and everything I connect to it, shows me the stats
-that matter, and turns my work and interests into research, tickets, ideas and concepts — including
-finding the OSS tools and the people that fit what I am already building.**
+Two TypeScript systems for running and observing AI agents. Both are built to be **checked rather
+than believed** — where a claim is made, there is a test, a measurement, or a falsifier behind it.
 
-Ideaboard, control center, concept factory: **the same tool, one store, three readings.**
-Standalone from DeepSeek Harness. Built on the same Cordis fabric the host harness uses, on the same public npm
-packages.
-
-| | |
-|---|---|
-| **What it is** | [`PRODUCT.md`](PRODUCT.md) — the five jobs, the loop, the non-negotiables |
-| **How it is built** | [`ARCHITECTURE.md`](ARCHITECTURE.md) — plugin graph, primitive algebra, store schema, the host harness seam |
-| **Where it stands** | [`STATUS.md`](STATUS.md) — what runs today, what is next, open questions |
-| **Decisions taken** | [`the private working notes`](the private working notes) — Q9 and Q11 are now closed, with their evidence |
-| **Why these rules** | [`PRODUCT.md`](PRODUCT.md) §5 — each rule is the residue of a named prior failure |
+| | Project | What it is | License |
+|---|---|---|---|
+| **[`consonance/`](consonance/)** | **Consonance** | A capability-materialisation kernel: each state transition materialises exactly the model, context and tools a step needs, and the next transition revokes them. **Enforcement by absence, not refusal.** | AGPL-3.0 |
+| **[`app/`](app/)** | **cockpit** | An observability and signal pipeline over real agent-session logs: ingests a corpus, surfaces relevant stats, and turns work and interests into research, tickets and concepts. | MIT |
 
 ---
 
-## 60 seconds
+## Consonance — capability materialisation
 
-The product lives in [`app/`](app); the design record and provenance ledgers are at the root. The
-root `package.json` delegates, so these work from the root:
+> The engine has total authority and zero agency. The model has total agency and zero authority.
+> Neither can produce a side effect alone.
+
+Most agent systems grant capability broadly and then police it. Consonance does the opposite: the
+agent is never in a position to do the wrong thing, so there is nothing to police, nothing to refuse,
+and nothing to roll back.
+
+**The measured claim.** A live A/B ran the same task, from the same starting state, with the same
+model and the same prompt. The only variable was the state class:
+
+| | `editor` (attached) | `reasoner` (output-only) |
+|---|---|---|
+| tools materialised | `[fs.read, fs.write]` | `[]` |
+| model's plan | write `module.ts` | write `module.ts` — byte-identical |
+| applied | **true** | **false** — `absent: fs.write` |
+| workspace digest | `b40dedde → aef2e4ab` | **`b40dedde` — unchanged** |
+
+The model wanted to write the file in both runs. In one it could; in the other the capability **did
+not exist**. Attribution: 100 % the state class, 0 % the prompt.
+
+- 528 commits · 441 files · 16,704 LOC in `src/` against 18,967 LOC of tests · **0 runtime dependencies**
+- `bubblewrap --unshare-all` with an explicit host allowlist; kernel error codes as the proof
+- A **35-entry offline suite** where a skipped check is a failure, not a pass
+- 99 recorded decisions, 11 pre-registered experiments with falsifiers written *before* the code ran
+
+Read [`consonance/CONSONANCE.md`](consonance/CONSONANCE.md) for the thesis, then
+[`consonance/docs/DECISION_LOG.md`](consonance/docs/DECISION_LOG.md) for why everything is the way it is.
+
+---
+
+## cockpit — observability and signal pipeline
+
+A standalone Cordis application that ingests agent-session logs and turns them into stats and
+proposals. It reads on-disk session data through a single adapter and needs **no cooperation from the
+harness that wrote it**.
+
+- **433,269 observations · 3,067 sessions · 190,865 steps · 230,635 tool calls · 8,654 turns** ingested
+  from real session logs, streaming one session at a time (the first version OOM'd at ~4 GiB).
+- Reverse-engineered the format: a session log is **concatenated zstd frames**, and a naive
+  `zstdDecompressSync` silently yields **one** record. Reproduced as a three-line test.
+- **Four defects found by running it against the real corpus, all of which passed a green unit suite** —
+  including unpaired tool results, token sums triple-counted across rungs, and a promotion gate that
+  passed by default. The lesson is in the code: *unit tests prove the adapter does what was written;
+  only the corpus proves what was written matches reality.*
+- 112 tests · typecheck · a 131-claim provenance ledger in which **every claim carries a falsifier**
+
+Read [`PRODUCT.md`](PRODUCT.md) for what it is, [`ARCHITECTURE.md`](ARCHITECTURE.md) for how it is
+built, and [`STATUS.md`](STATUS.md) for what runs today.
+
+---
+
+## Prerequisites
+
+- **Node ≥ 24** for `consonance/` (it uses native TypeScript execution and `node --test`)
+- **Node ≥ 22** for `app/`
+- **pnpm 11** for `app/`
+- **`bubblewrap`** (`/usr/bin/bwrap`) for `consonance/`'s sandbox tests
+
+## Quickstart — cockpit
 
 ```bash
-pnpm install:app    # or: cd app && pnpm install
+pnpm install:app
 pnpm start          # boots the Cordis graph, prints capture health, exits on Ctrl-C
-pnpm server         # same, and keeps the HTTP surface up on http://127.0.0.1:7317
-pnpm check          # ledger validation + typecheck + 112 tests
-pnpm ingest         # drain the the host harness corpus into the store (~80 s for ~3,000 sessions)
+pnpm server         # same, with the HTTP surface on http://127.0.0.1:7317
+pnpm check          # typecheck + 112 tests + ledger validation
 ```
+
+`pnpm ingest` drains a local session corpus into the store. With no corpus present it exits 0 and
+reports zero observations rather than failing — the product is standalone by construction.
+
+## Quickstart — Consonance
 
 ```bash
-# what does it know right now?
-curl -s localhost:7317/health | jq
-curl -s localhost:7317/api/summary | jq
-curl -s localhost:7317/api/stats | jq '.material'
-
-# run one factory pass: material signals in, proposals out
-curl -s -X POST localhost:7317/api/pass        # requires surface.allowMutations: true
-
-# every `cockpit/*` event, live
-curl -N localhost:7317/api/stream
+cd consonance
+npm run ci          # typecheck + docs gate + the 35-entry offline suite
+npm run real-ab     # a LIVE model through the mediated channel — not part of the gate
 ```
-
-**Talk to the host harness** (opt-in, one line in `cockpit.config.json`):
-
-```json
-{ "host harness": { "enabled": true, "home": "~/.host harness", "pollIntervalMs": 30000 } }
-```
-
-With `host harness.enabled: false`, or with no the host harness installation present at all, **everything above still
-runs.** That is the standalone acceptance check, and it executes on every boot.
-
----
-
-## The plugin graph
-
-```
-                         ┌──────────────────────────────┐
-   adapters ────────────▶│  capture   (unconditional)   │
-   host harness · git · whoop ·   │  tool_call → step → turn →   │
-   calendar · anything   │  session → workflow          │
-                         └──────────────┬───────────────┘
-                                        ▼
-                         ┌──────────────────────────────┐
-                         │  store   (append-only log)   │  ← the only writer on disk
-                         │  never delete · bi-temporal  │
-                         └──────────────┬───────────────┘
-                    ┌───────────────────┼───────────────────┐
-                    ▼                   ▼                   ▼
-              ┌──────────┐       ┌───────────┐       ┌────────────┐
-              │  stats   │       │   board   │◀──────│  factory   │
-              │ signals  │──────▶│  claims   │       │ research   │
-              │ (determ.)│       │ candidates│       │ finders    │
-              └────┬─────┘       │ decisions │       └────────────┘
-                   │             └─────┬─────┘
-                   │                   │
-                   └─────────┬─────────┘
-                             ▼
-                    ┌──────────────────┐
-                    │     surface      │  HTTP + SSE → board UI, agents, anything
-                    └──────────────────┘
-```
-
-One service per box, one `ctx.<name>`. Dependency order is expressed through `inject`, not through
-boot sequencing, so a plugin that needs `store` waits for it instead of racing it.
-
----
 
 ## Layout
 
 ```
-app/
-  src/
-    primitives.ts        the one algebra — Observation · Entity · Signal · Claim · Candidate
-                         · Decision, plus State/Memory, Gate/Eval, Skill, Adapter
-    store/log.ts         the append-only, bi-temporal JSONL log. No `delete` exists.
-    plugins/             one Cordis service each:
-      store.ts             ctx.store      append-only log
-      capture.ts           ctx.capture    the §22d contract + roll-ups
-      board.ts             ctx.claims     claims, candidates, decisions, gates, evals
-      stats.ts             ctx.stats      deterministic signals with baselines
-      adapters.ts          ctx.adapters   the connector registry and poller
-      factory.ts           ctx.factory    research → candidates, OSS + collaborator finders
-      surface.ts           ctx.surface    HTTP + SSE
-    adapters/host harness.ts      the ONLY file that may mention the host harness
-    bin.ts               standalone bootstrap: own Context, own graph, own lifecycle
-  tests/                 vitest — invariants first
+app/            cockpit — the observability product
+consonance/     Consonance — the capability-materialisation kernel (own history, own license)
+resume/         Résumé and CV, and the renderer that produces the PDFs
+PRODUCT.md      what cockpit is
+ARCHITECTURE.md how cockpit is built
+STATUS.md       where cockpit stands
 ```
 
-> **`ctx.claims`, not `ctx.board`.** the companion workspace (`~/the companion workspace/plugins/host harness-plugin-board`) already claims
-> `ctx.board` for a *message board* — post/read/peers/relay — with zero method overlap. Two plugins
-> claiming one service key resolve to one of them and the loser's API becomes unreachable
-> **silently**. `claims` names the load-bearing object and collides with nothing.
+## License
 
-**Provenance is part of the product.** `SOURCES.tsv` (82 sources) and `CLAIMS.tsv` (131 claims — both
-derived from `validate-ledgers.py`, which is the authority on these numbers) are
-normative in this repo, and `pnpm ledgers` validates them. Rule N10: a factual claim without a row
-there must not be asserted — and the product inherits that rule for anything it generates.
+The root project and `app/` are **MIT** — see [`LICENSE`](LICENSE).
+`consonance/` is **AGPL-3.0** — see [`consonance/LICENSE`](consonance/LICENSE).
 
----
+## A note on the numbers
 
-## Reading order
-
-1. **`README.md`** — you are here.
-2. **`PRODUCT.md`** — what the tool is, in the author's own words.
-3. **`ARCHITECTURE.md`** — how it is put together, and why each seam is where it is.
-4. **`STATUS.md`** — what runs, what does not, what is blocked on a decision.
-5. `the private working notes` → `the private plan` → `AGENTS.md` — operational state and visit log.
-6. `the private research record`, `discussion.md` — the research record. **Read as history, not as the
-   current design.** Where they disagree with `PRODUCT.md`, `PRODUCT.md` wins and the record is the
-   evidence behind it.
+Every figure in this README came out of a command that was run, including the unflattering ones. Where
+a measurement contradicted an earlier claim, the claim was corrected in place rather than deleted —
+see `STATUS.md`, which records several such corrections.
