@@ -40,6 +40,13 @@ not exist**. Attribution: 100 % the state class, 0 % the prompt.
 Read [`consonance/CONSONANCE.md`](consonance/CONSONANCE.md) for the thesis, then
 [`consonance/docs/DECISION_LOG.md`](consonance/docs/DECISION_LOG.md) for why everything is the way it is.
 
+> **Known limitation, stated rather than hidden.** Consonance was folded in here by a subtree merge so
+> its 528 commits stay reachable. One consequence: its `scripts/docs-gate.mjs` asserts that its own
+> root is a git repository and *refuses to report a pass otherwise* — so `npm run ci` inside
+> `consonance/` stops at that guard, because the `.git` directory now lives one level up. The gate is
+> correct to refuse (a gate that can't inspect history must not claim green), and every other Consonance
+> script runs normally. If you want the full gate, clone Consonance as its own repository.
+
 ---
 
 ## cockpit — observability and signal pipeline
