@@ -1,7 +1,7 @@
 # Aswin Ram Kalugasala Moorthy
 
 **Chicago, IL** · kaswinram.1603@gmail.com · +1 (872) 214-6683
-[github.com/Aswin-Ram-K](https://github.com/Aswin-Ram-K)
+[github.com/Aswin-Ram-K](https://github.com/Aswin-Ram-K) · [publish-present-compete](https://github.com/Aswin-Ram-K/publish-present-compete)
 
 ---
 
@@ -26,7 +26,7 @@ deployment engineering**.
 ## What I build (selected work)
 
 ### Consonance — capability-materialisation kernel for agent runtimes · *TypeScript, AGPL-3.0*
-**Private — sanitising for public release · source walkthrough available on request**
+**[github.com/Aswin-Ram-K/publish-present-compete/tree/main/consonance](https://github.com/Aswin-Ram-K/publish-present-compete/tree/main/consonance)**
 
 An agent kernel where each state transition materialises exactly the model, context and tools that
 step requires, and the next transition revokes them. **Enforcement by absence, not refusal.**
@@ -48,7 +48,7 @@ step requires, and the next transition revokes them. **Enforcement by absence, n
   pre-registered control **voided**.
 
 ### cockpit — observability & signal pipeline over 3,067 real agent sessions · *TypeScript*
-`publish-present-compete/app` (private; publishable)
+**[github.com/Aswin-Ram-K/publish-present-compete/tree/main/app](https://github.com/Aswin-Ram-K/publish-present-compete/tree/main/app)**
 
 - Ingested **433,269 observations · 3,067 sessions · 190,865 steps · 230,635 tool calls · 8,654
   turns** from on-disk session logs, streaming one session at a time (peak RSS 9.3 GiB after an
@@ -110,6 +110,7 @@ append-only ledgers, MLOps-aware workflows
 
 ## Notes on accuracy
 
-My two strongest repos are **private today** and I am sanitising them for release; both are walkable
-on request, live, on a screen. Every number above was measured by running something — including the
-unflattering ones (the triple-counted 66.4B tokens, the confounder axis that read 0 %).
+Every number above was measured by running something — including the unflattering ones (the
+triple-counted 66.4B tokens, the confounder axis that read 0 %). The source is public; where a figure
+came from a corpus that cannot be shipped, the reproduction script is in the repo and the figure is
+stated as a measurement of it.

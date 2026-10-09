@@ -37,8 +37,7 @@ internship now, new-graduate on graduation.
 ## Selected projects
 
 ### 1. Consonance — capability-materialisation kernel
-**Private, sanitising for public release · source walkthrough on request** · TypeScript ·
-AGPL-3.0 · Node ≥24 · *528 commits, 441 files, 16,704 LOC `src/`, 18,967 LOC `tests/`, 0 runtime deps*
+**[github.com/Aswin-Ram-K/publish-present-compete/tree/main/consonance](https://github.com/Aswin-Ram-K/publish-present-compete/tree/main/consonance)** · TypeScript · AGPL-3.0 · Node ≥24 · *528 commits, 441 files, 16,704 LOC `src/`, 18,967 LOC `tests/`, 0 runtime deps*
 
 The engine has total authority and zero agency. The model has total agency and zero authority.
 Neither can produce a side effect alone.
@@ -126,7 +125,7 @@ research and tickets. Built as a product, not a demo.
 ---
 
 ### 3. Meta-Agent — review-first control plane
-**Private · MIT-licensed · source walkthrough on request** · Python · MIT ·
+**Private — MIT-licensed · source walkthrough on request** · Python · MIT ·
 FastAPI + PostgreSQL + Temporal + React
 
 A self-hosted control plane for designing, observing and **reviewing** multi-agent workflows: one
@@ -237,7 +236,7 @@ seat.
 ## Contact
 
 kaswinram.1603@gmail.com · +1 (872) 214-6683 ·
-[github.com/Aswin-Ram-K](https://github.com/Aswin-Ram-K)
+[github.com/Aswin-Ram-K](https://github.com/Aswin-Ram-K) · [publish-present-compete](https://github.com/Aswin-Ram-K/publish-present-compete)
 
 *Work authorization: F-1 student authorization. Seeking summer 2027 internship and new-graduate
 roles.*
