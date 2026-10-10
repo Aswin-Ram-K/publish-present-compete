@@ -118,3 +118,19 @@ The root project and `app/` are **MIT** — see [`LICENSE`](LICENSE).
 Every figure in this README came out of a command that was run, including the unflattering ones. Where
 a measurement contradicted an earlier claim, the claim was corrected in place rather than deleted —
 see `STATUS.md`, which records several such corrections.
+
+---
+
+## Deliberately not included
+
+**`consonance/source-material/` is not in this repository.** Consonance's own decision log (D-053) committed
+it for durability, 2.6 MB across 52 files of design records and handoffs — and that same entry records the
+assumption it was committed under: *"the repository stays private."*
+
+It is not here because it is third-party planning material rather than product code, and because one of its
+handoffs contains **real personal spending records** that have no business on the open internet. The
+material is preserved in full in the private repository; only this public mirror omits it.
+
+A few Consonance documents still reference `source-material/...` paths. Those references are left as
+written rather than edited, because `docs/DECISION_LOG.md` is append-only by the project's own rule — a
+record you can rewrite is not a record.
