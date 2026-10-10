@@ -134,7 +134,7 @@ N2 makes recording unconditional; N5 protects *attribution*, not recording.
 
 **Service key: `ctx.claims`, not the `board` key.** The class is still `BoardService` and the file is
 still `app/src/plugins/board.ts` — only the key moved, and it moved to avoid a *silent* collision.
-the companion workspace (`the-companion-workspace/plugins/host harness-plugin-board`) already ships `super(ctx, 'board')` for a **message
+the companion workspace (`the-companion-workspace/plugins/the host harness board plugin`) already ships `super(ctx, 'board')` for a **message
 board** (`post` / `read` / `peers` / `relay`) with zero method overlap with ours, and a Cordis
 service-key collision fails **silently**: two plugins claiming one key resolve to one of them and
 the loser's API becomes unreachable rather than rejected — an injecting plugin gets an object with
@@ -184,17 +184,17 @@ surface becomes noise and gets muted.
 
 ---
 
-## 7. The the host harness seam
+## 7. The host harness seam
 
-**One file:** [`app/src/adapters/host harness.ts`](app/src/adapters/host harness.ts). It is the only file in the repository
-permitted to mention the host harness. Delete it, set `host harness.enabled: false`, and everything else works — that is
+**One file:** [`app/src/adapters/harness.ts`](app/src/adapters/harness.ts). It is the only file in the repository
+permitted to mention the host harness. Delete it, set `harness.enabled: false`, and everything else works — that is
 the standalone acceptance check.
 
 ### What it reads, verified on disk 2026-09-29
 
 ```
-~/.host harness/sessions/<projectKey>/<encodedSessionId>/session.v<N>.jsonl.zstd
-~/.host harness/storages/session_projcache/sessions/<sessionId>.json
+<harness-home>/sessions/<projectKey>/<encodedSessionId>/session.v<N>.jsonl.zstd
+<harness-home>/storages/session_projcache/sessions/<sessionId>.json
 ```
 
 Four facts about that format turned out to be load-bearing, and each cost a round of investigation:
@@ -242,9 +242,9 @@ session):
 | `tool/call` | `ToolCallObs` — **arguments are hashed**, never stored (§22d) |
 | `tool/result` | the call's status, duration, and `meta.path` → `files_touched` |
 | `request/context`, `request/header` | `model_set` — 96.68% each, 97.57% union (`CLM-CONF-02`). **NOT `model/selection`**, which covers 0.23% of sessions |
-| `request/header` → `data.header.config.reasoningEffort` | `effort` — the only carrier, 61.85% of sessions (`CLM-CONF-04`). **This exact path matters:** reading a shallower key yields 0%, which is a bug that actually shipped in the first adapter and was caught only by verifying against the corpus — hence the adapter reads this exact path instead of walking for an effort-like key (`app/src/adapters/host harness.ts`) |
+| `request/header` → `data.header.config.reasoningEffort` | `effort` — the only carrier, 61.85% of sessions (`CLM-CONF-04`). **This exact path matters:** reading a shallower key yields 0%, which is a bug that actually shipped in the first adapter and was caught only by verifying against the corpus — hence the adapter reads this exact path instead of walking for an effort-like key (`app/src/adapters/harness.ts`) |
 | `user/message.data.source.plugin` | `context_plugin_set` — 94.9% of sessions, 19 distinct sets (`CLM-CONF-01`) |
-| `user/message` with `source.kind == "skill-catalog"` | `skill_catalog_set` — the **sorted, deduplicated set of each entry's `name`** (`app/src/adapters/host harness.ts:779-784`, written at `:1102`); **7 distinct values** after a clean rebuild, zero `"catalog"` literals. Verified and restated in full below (`CLM-CONF-10`, `CLM-CONF-11`) |
+| `user/message` with `source.kind == "skill-catalog"` | `skill_catalog_set` — the **sorted, deduplicated set of each entry's `name`** (`app/src/adapters/harness.ts:779-784`, written at `:1102`); **7 distinct values** after a clean rebuild, zero `"catalog"` literals. Verified and restated in full below (`CLM-CONF-10`, `CLM-CONF-11`) |
 | `sandbox/mode`, `approval/policy`, `permission/preset` | the **ordered policy timeline** — 3/2/4 values, 67 mid-session changes (`CLM-CONF-07`) |
 | session header `delegationDepth` | `max_depth` — exact, 100% (`CLM-CONF-05`) |
 | on-disk `parentSession` join ∪ in-log `started subagent <uuid>` | `subagent_spawns` — a declared **estimate**, 38.83% of parent edges resolve on disk (`CLM-CONF-06`) |
@@ -282,8 +282,8 @@ findings above are, so the pattern stays visible:
 
 | # | Defect | What it actually did | Status |
 |---|---|---|---|
-| 1 | `effort` read `data.reasoningEffort` instead of `data.header.config.reasoningEffort` | populated **0%** against a measured **61.85%** (`CLM-CONF-04`) | fixed — the adapter reads the exact path and the mapping row above names it (`app/src/adapters/host harness.ts`) |
-| 2 | `skill_catalog_set` read the wrong path — `data['entries']`, one level above the real `data.source.entries` | the read always yielded `undefined`, so control reached a hardcoded fallback literal `JSON.stringify('catalog')`: **1 distinct value where the corpus has 7**. **A test fixture encoded the buggy path**, which is why the suite stayed green (`CLM-CONF-11`) | fixed — names only, `app/src/adapters/host harness.ts:779-784` and `:1102`; a clean rebuild verified exactly **7 distinct values** with **zero** `"catalog"` literals |
+| 1 | `effort` read `data.reasoningEffort` instead of `data.header.config.reasoningEffort` | populated **0%** against a measured **61.85%** (`CLM-CONF-04`) | fixed — the adapter reads the exact path and the mapping row above names it (`app/src/adapters/harness.ts`) |
+| 2 | `skill_catalog_set` read the wrong path — `data['entries']`, one level above the real `data.source.entries` | the read always yielded `undefined`, so control reached a hardcoded fallback literal `JSON.stringify('catalog')`: **1 distinct value where the corpus has 7**. **A test fixture encoded the buggy path**, which is why the suite stayed green (`CLM-CONF-11`) | fixed — names only, `app/src/adapters/harness.ts:779-784` and `:1102`; a clean rebuild verified exactly **7 distinct values** with **zero** `"catalog"` literals |
 | 3 | Cursor re-yield: an in-flight step stamps its own start time as `ts`, the same value the inclusive cursor gate tests | a record could be **its own cursor maximum**, so it re-appended every poll — one id was written **34 times** (`CLM-CONF-12`) | fixed with a boundary-id gate; clean rebuild: **0 duplicate ids / 0 identical re-appends** |
 | 4 | Latent file-skip: an unconditional `if (last < sinceMs) continue` | discarded a never-seen file whose last event predated the cursor. Measured as **not yet having cost data** — the 42 sessions missing at the time were all *newer* than the cursor, i.e. ordinary lag — but it would fire the moment a resumable catch-up or live tail is enabled (`CLM-CONF-13`) | fixed by gating on the index entry |
 
@@ -291,7 +291,7 @@ findings above are, so the pattern stays visible:
 here as build findings, not as ledgered claims.~~ **Corrected 2026-09-29 — that was true when written
 and is now false: the rows exist.** Defect 3 is `CLM-CONF-12` (`established`) and defect 4 is
 `CLM-CONF-13` (`supported`), both against **`SRC-082`** — this workspace's **own build/verification
-measurement pass** over the cockpit adapter and store, deliberately **not** `SRC-081` (the the host harness
+measurement pass** over the cockpit adapter and store, deliberately **not** `SRC-081` (the host harness
 session-log corpus census). Assert them as **adapter findings**; neither is a corpus claim.
 
 **The lesson, as a finding:** unit tests prove the adapter does what was written; **only the corpus
@@ -340,7 +340,7 @@ appends frames — and it needs no credential, no process, and no cooperation fr
 | Path | Why |
 |---|---|
 | the harness home's credential and key material | never read — ingest does not need it, and it holds secrets that are not this tool's to handle |
-| `~/.host harness/attachments/**` | user file bytes |
+| `<harness-home>/attachments/**` | user file bytes |
 | another process's `session.lock` | closing or removing it corrupts ownership |
 
 The adapter touches the session logs and the projection cache, and nothing else.
@@ -350,7 +350,7 @@ The adapter touches the session logs and the projection cache, and nothing else.
 | Risk | Measurement | Posture |
 |---|---|---|
 | **Ingest peak RSS is 9.31 GiB** (2.42 GiB on a resume run) for a 329 MiB store, on a 29 GB / 24-core machine | Bounded, but **unexplained** — and it would OOM on a smaller machine, plausibly what caused this project's earlier ingest OOM at ~4 GB. Related: `zlib.zstdDecompressSync` **leaks a native ZSTD context per call** — 1.08 GB RSS after 54,385 frames, and a naive 8-worker corpus scan hit 22 GB of 29 GB and never finished | **Open, recorded not fixed.** The recipe that works: recycle processes, ~20 files per child — a full 3,067-file scan then takes **13 s** |
-| **`_op:"invalidate"` is structurally never emitted** | The store's fold handles it and the test suite exercises it, but the the host harness adapter's write path never produces one — supersession is a re-`put` at a higher `_seq`. The log's second verb is designed and tested but **unused by the only writer that exists** | **Observation, not a defect.** A supersede counter must count re-puts, not invalidates |
+| **`_op:"invalidate"` is structurally never emitted** | The store's fold handles it and the test suite exercises it, but the host harness adapter's write path never produces one — supersession is a re-`put` at a higher `_seq`. The log's second verb is designed and tested but **unused by the only writer that exists** | **Observation, not a defect.** A supersede counter must count re-puts, not invalidates |
 
 ---
 
@@ -367,7 +367,7 @@ app/
   src/store/log.ts       the append-only, bi-temporal JSONL store
   src/plugins/           one Cordis service each: store, capture, board, stats,
                          adapters, factory, surface
-  src/adapters/host harness.ts    the only file permitted to mention the host harness
+  src/adapters/harness.ts    the only file permitted to mention the host harness
   src/bin.ts             entry point
   scripts/ingest.ts      corpus ingest
   tests/                 vitest specs
@@ -388,7 +388,7 @@ The parts that must port into the new system, and how they port:
 | `app/src/primitives.ts` | **no** | drop in |
 | `app/src/store/log.ts` | **no** (Node `fs` only) | drop in |
 | `app/src/plugins/*.ts` | yes — `Service`, `inject`, `ctx.effect`, typed events | re-mount; the bodies are unchanged |
-| `app/src/adapters/host harness.ts` | no (registers through `ctx.adapters`) | drop in |
+| `app/src/adapters/harness.ts` | no (registers through `ctx.adapters`) | drop in |
 
 Because the algebra and the store have no fabric dependency, adopting this work elsewhere is a
 re-mount, not a rewrite. Cordis was chosen because the host harness already runs on it and the same packages are

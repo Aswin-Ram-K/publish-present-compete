@@ -1,16 +1,4 @@
-# Log is the author's own history, not project source. It is re-derivable by `pnpm ingest`.
-data/
-
-# Dependencies and build output
-node_modules/
-.pnpm-store/
-dist/
-coverage/
-*.tsbuildinfo
-
-# The root package has no dependencies of its own — it only delegates to app/.
-# Its lockfile is a build artifact of the deps check, not a real dependency set.
-/pnpm-lock.yaml
-
-# Local config overrides
-*.local.json
+# Nothing here is generated. This repository is documents, not a build.
+.DS_Store
+*.swp
+*~
